@@ -12,8 +12,9 @@ echo 1 - Nettoyage disque
 echo 2 - Verification system
 echo 3 - Infos PC
 echo 4 - Outils Windows
-echo 5 - Quitter
-echo 6 - Mise à jour
+echo 5 - Test de connnexion internet
+echo 6 - Monitor de ressources
+echo 7 - Quitter
 echo.
 
 set /p choix="choix :"
@@ -21,8 +22,9 @@ if "%choix%"=="1" goto nettoyage
 if "%choix%"=="2" goto verification
 if "%choix%"=="3" goto Infos
 if "%choix%"=="4" goto Outils
-if "%choix%"=="5" goto Quitter
-if "%choix%"=="6" goto MAJ
+if "%choix%"=="5" goto TestConnexion
+if "%choix%"=="6" goto Monitor
+if "%choix%"=="7" goto Quitter
 echo Choix invalide. appuier sur une touche pour recommencer.
 pause >nul
 goto menu
@@ -60,6 +62,20 @@ set /p tools="choisissez un outil : "
 if "%tools%"=="1" start taskmgr
 if "%tools%"=="2" start cmd
 if "%tools%"=="3" start explorer
+pause
+goto menu
+
+:TestConnexion
+cls
+echo Test de connexion internet en cours.......
+ping www.google.com -n 4
+pause
+goto menu
+
+:Monitor
+cls
+echo Lancement du monitor de ressources.......
+resmon
 pause
 goto menu
 
