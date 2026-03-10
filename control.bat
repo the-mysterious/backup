@@ -35,7 +35,8 @@ echo 7 - Test de vitesse du disque
 echo 8 - Infos réseau
 echo 9 - Scanner les ports ouvert
 echo 10 - Monitoring
-echo 11 - Quitter
+echo 11 - Recherche de dossier
+echo 12 - Quitter
 echo.
 
 set /p choix="choix :"
@@ -49,7 +50,8 @@ if "%choix%"=="7" goto TestVitesse
 if "%choix%"=="8" goto InfosReseau
 if "%choix%"=="9" goto ScannerPorts
 if "%choix%"=="10" goto Monitoring
-if "%choix%"=="11" goto Quitter
+if "%choix%"=="11" goto RechercheDossier
+if "%choix%"=="12" goto Quitter
 echo Choix invalide. appuier sur une touche pour recommencer.
 pause >nul
 goto menu
@@ -163,7 +165,7 @@ goto monitoring
 :MonitorProcessus
 cls
 echo ========PROCESSUS UTILISANT LE PLUS DE RAM========
-tasklist /FI "statuts eq running" /FO 
+tasklist /FI "STATUSeq running" /FO 
 table
 pause
 goto monitoring
@@ -187,8 +189,8 @@ goto monitoring
 :MonitorTemperature
 cls
 echo ========TEMPERATURE DU SYSTEME========
-echo Note : La température est affiché en dixième de degrés Kelvin. Pour convertir en degrés Celsius, utilisez la formule suivante : (Température en dixième de degrés Kelvin - 2731) / 10
-echo Exemple : Si la température affichée est 3000, cela correspond à (3000 - 2731) / 10 = 26.9°C
+echo Note : La temperature est affiche en dixieme de degres Kelvin. Pour convertir en degres Celsius, utilisez la formule suivante : (Température en dixieme de degres Kelvin - 2731) / 10
+echo Exemple : Si la temperature affichee est 3000, cela correspond a (3000 - 2731) / 10 = 26.9°C
 echo Il est possible que la température affichée soit incorrecte ou non disponible en fonction du matériel et des pilotes installés sur votre système.
 echo.
 wmic /namespace://root/wmi PATH MSAcpi_ThermalZoneTemperature get CurrentTemperature
@@ -218,6 +220,76 @@ echo.
 
 timeout /t 3 >nul
 goto monitoring
+
+
+:RechercheDossier
+cls 
+title Recherche de dossier
+color 0A
+:menu 
+cls
+echo ===============================
+echo         Recherche de dossier
+echo ===============================
+echo 1 - Rechercher un dossier par nom
+echo 2 - Rechercher un dossier 
+echo 3 - Recherche par extension
+echo 4 - Recherche les plus gros fichiers
+echo 5 - quitter
+echo 
+ =============================== ===============================
+ set /p choixD="choixD :"
+if "%choixD%"=="1" goto Fichier
+if "%choixD%"=="2" goto Dossier
+if "%choixD%"=="3" goto Extension
+if "%choixD%"=="4" goto Gros
+if "%choixD%"=="5" goto exit
+goto menu
+
+
+:fichier
+cls
+echo ========== Recherche de fichier ==========
+set /p nom=Nom du fichier :
+echo.
+echo recherche de dossier en cours....
+for /r C:\ %%a in (*%nom%*) do echo %%a
+echo.
+pause
+goto menu
+
+:dossier
+cls
+echo ========== Recherche de dossier ==========
+set /p nom=Nom du doissier :
+echo.
+echo recherche de dossier en cours....
+dir C:\*%nom%* /add /s /b 2>nul
+echo.
+pause
+goto menu
+
+:extension
+cls
+echo ========== Recherche par extension ==========
+set /p ext=Extension du fichier (ex: .txt, .pdf etc...) :
+echo.
+echo recherche de dossier en cours....
+dir C:\*.%ext% /add /s /b 2>nul
+echo.
+pause
+goto menu
+
+:Gros
+cls
+echo ========== Recherche des plus gros fichiers ==========
+set /p tailler=Afficher les fichier de plus de (en Mo) : 
+echo.
+echo recherche de dossier en cours....
+powershell -NoProfile -Command "Get-ChildItem C:\ -Rescure -ErrorAcction SilentlyContinue | Where-Object { -not $_.PSIsContainer -and $_.Length -gt (%taille%MB) } | Select-Object FullName,@{Name='Size(Mb)'; Expression={[math]::Round($_.Length / 1MB, 2)}} | Format-Table -AutoSize"
+echo.
+pause
+goto menu
 
 
 :Quitter
