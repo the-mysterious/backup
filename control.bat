@@ -139,7 +139,7 @@ goto monitoring
 :MonitorRAM
 cls
 echo ======== ETAT MEMOIRE ========
-systemifo || find "Mémoire"
+systeminfo | find "Mémoire"
 pause
 goto monitoring
 
