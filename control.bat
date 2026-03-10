@@ -14,7 +14,10 @@ echo 3 - Infos PC
 echo 4 - Outils Windows
 echo 5 - Test de connnexion internet
 echo 6 - Monitor de ressources
-echo 7 - Quitter
+echo 7 - Test de vitesse du disque
+echo 8 - Infos réseau
+echo 9 - Scanner les ports ouvert
+echo 10 - Quitter
 echo.
 
 set /p choix="choix :"
@@ -24,7 +27,11 @@ if "%choix%"=="3" goto Infos
 if "%choix%"=="4" goto Outils
 if "%choix%"=="5" goto TestConnexion
 if "%choix%"=="6" goto Monitor
-if "%choix%"=="7" goto Quitter
+if "%choix%"=="7" goto TestVitesse
+if "%choix%"=="8" goto InfosReseau
+if "%choix%"=="9" goto ScannerPorts
+
+if "%choix%"=="10" goto Quitter
 echo Choix invalide. appuier sur une touche pour recommencer.
 pause >nul
 goto menu
@@ -76,6 +83,27 @@ goto menu
 cls
 echo Lancement du monitor de ressources.......
 resmon
+pause
+goto menu
+
+:TestVitesse
+cls
+echo Test de vitesse du disque en cours.......
+winsat disk
+pause
+goto menu
+
+:InfosReseau
+cls
+echo Informations réseau :
+ipconfig /all
+pause
+goto menu
+
+:ScannerPorts
+cls
+echo Scanner les ports ouverts en cours.......
+netstat -an
 pause
 goto menu
 
