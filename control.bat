@@ -137,6 +137,7 @@ echo 4 - Monitor réseau en direct
 echo 5 - Monitor espace disque
 echo 6 - Monitor température
 echo 7 - Monitor complet
+echo 8 - Retour
 set /p monitoring="choisissez un outil de monitoring : "
 if "%monitoring%"=="1" goto MonitorCPURAM
 if "%monitoring%"=="2" goto MonitorRAM
@@ -145,6 +146,8 @@ if "%monitoring%"=="4" goto MonitorReseau
 if "%monitoring%"=="5" goto MonitorDisque
 if "%monitoring%"=="6" goto MonitorTemperature
 if "%monitoring%"=="7" goto MonitorComplet
+if "%monitoring%"=="8" goto Retour
+
 goto menu
 
 :MonitorCPURAM
@@ -221,6 +224,11 @@ echo.
 timeout /t 3 >nul
 goto monitoring
 
+:menu
+cls
+echo Exit du Monitoring
+echo Merci d'avoir utiliser le Miku controle.
+exit
 
 :RechercheDossier
 cls 
